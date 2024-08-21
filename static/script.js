@@ -24,7 +24,7 @@ document.getElementById('processButton').addEventListener('click', function() {
         .then(data => {
             if (data.status === 'success') {
                 document.getElementById('outputImage').src = data.output_image + '?t=' + new Date().getTime();
-                alert('Image processing completed!');
+                alert(data.message);
             } else {
                 alert(data.message);
             }

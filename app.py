@@ -33,17 +33,17 @@ def process():
         file.save(input_image_path)
 
         # Process the image
-        face_detected = process_image(input_image_path, output_image_path)
+        success, message = process_image(input_image_path, output_image_path)
 
-        if face_detected:
-            return jsonify({'status': 'success', 'output_image': output_image_path})
+        if success:
+            return jsonify({'status': 'success', 'output_image': output_image_path, 'message': message})
         else:
-            return jsonify({'status': 'fail', 'message': 'No face detected'})
+            return jsonify({'status': 'fail', 'message': message})
 
-# Route to serve the process image
+# Route to serve the processed image
 @app.route('/uploads/<filename>')
 def uploaded_file(filename):
-    return send_file(os.path.join(app.config['UPLOAD_FOLDER'], filename), mimetype=image/jpeg)
+    return send_file(os.path.join(app.config['UPLOAD_FOLDER'], filename), mimetype='image/jpeg')
 
 if __name__ == '__main__':
     app.run(debug=True)
