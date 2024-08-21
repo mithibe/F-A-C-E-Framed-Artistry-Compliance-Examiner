@@ -1,9 +1,22 @@
+let cropper;
+
 document.getElementById('imageInput').addEventListener('change', function(event) {
     const file = event.target.files[0];
     if (file) {
         const reader = new FileReader();
         reader.onload = function(e) {
-            document.getElementById('inputImage').src = e.target.result;
+            const inputImage = document.getElementById('inputImage');
+            inputImage.src = e.target.result;
+
+            // Initialize Cropper.js
+            if (cropper) {
+                cropper.destroy();
+            }
+            cropper = new Cropper(inputImage, {
+                aspectRatio: 1, // Force square crop
+                viewMode: 2,
+            });
+
             document.getElementById('processButton').disabled = false;
         };
         reader.readAsDataURL(file);
@@ -15,6 +28,13 @@ document.getElementById('processButton').addEventListener('click', function() {
     if (file) {
         const formData = new FormData();
         formData.append('image', file);
+
+        // Get crop data from Cropper.js
+        const cropData = cropper.getData(true);
+        formData.append('cropX', cropData.x);
+        formData.append('cropY', cropData.y);
+        formData.append('cropWidth', cropData.width);
+        formData.append('cropHeight', cropData.height);
 
         fetch('/process', {
             method: 'POST',
