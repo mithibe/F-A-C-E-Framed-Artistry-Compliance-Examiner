@@ -2,10 +2,10 @@ import cv2
 import mediapipe as mp
 import numpy as np
 
-def is_background_plain(image, threshold=15):
-    """Check if the background is plain by calculating the standard deviation of pixel values."""
-    std_dev = np.std(image)
-    return std_dev < threshold
+# def is_background_plain(image, threshold=15):
+#     """Check if the background is plain by calculating the standard deviation of pixel values."""
+#     std_dev = np.std(image)
+#     return std_dev < threshold
 
 def process_image(input_image_path, output_image_path):
     # Initialize MediaPipe Face Detection
@@ -25,9 +25,9 @@ def process_image(input_image_path, output_image_path):
     # Convert the image from BGR to RGB
     image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
-    # Check if the background is plain
-    if is_background_plain(image):
-        return False, 'Background is plain, no need to remove'
+    # # Check if the background is plain
+    # if is_background_plain(image):
+    #     return False, 'Background is plain, no need to remove'
 
     # Detect faces in the image
     results = face_detection.process(image_rgb)
